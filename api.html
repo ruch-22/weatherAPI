@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Weather app</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="api.css">
+
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h2><ion-icon name="location-outline"></ion-icon><span id="location"></span></h2>
+            <h6 id="weather"></h6>
+            <h4><span id="temp"></span><sup>o</sup>C</h4>
+            <img src="" id="icon">
+            <button onclick="windows.location.reload()" class="refresh"><ion-icon name="refresh-circle-outline"></ion-icon></button>
+        </div>
+    </div>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script>
+    link= "https://api.openweathermap.org/data/2.5/weather?q=Nagpur&appid=774dcaad6d3ab65f24b5a08f998285dc";
+    var request = new XMLHttpRequest();
+    request.open('GET', link, true);
+    request.onload = function(){
+        var obj = JSON.parse(this.response);
+        console.log(obj);
+        var temp = Math.round(obj.main.temp - 273.15);
+        var weather = obj.weather[0].main;
+        var icon = obj.weather[0].icon;
+        var location = obj.name;
+        document.getElementById('temp').innerHTML = temp.toFixed(2);
+        document.getElementById('weather').innerHTML = weather;
+        document.getElementById('location').innerHTML = location;
+        document.getElementById('icon').src = "http://openweathermap.org/img/w/"+icon+".png";
+    }
+    if(request.status >= 200 && request.status < 400){
+        request.send();
+    }
+    else{
+        console.log('The city data is not available');
+    }
+    request.send();
+</script>
+</html>
